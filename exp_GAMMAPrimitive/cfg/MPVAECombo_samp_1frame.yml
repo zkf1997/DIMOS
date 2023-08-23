@@ -1,0 +1,38 @@
+modelconfig:
+  predictor_config: MPVAE_samp_1frame_rollout
+  regressor_config: MoshRegressor_v3_male
+
+lossconfig:
+  weight_rec: 1.0
+  weight_td: 3.0
+  weight_kld: 1.0
+  weight_reg_hpose: 0.01
+  annealing_kld: false
+  robust_kld: true
+  use_cycle: false
+
+# use predicted coordinate
+trainconfig:
+  scheduled_sampling: false
+  use_gt_transform: false
+  ft_regressor: false
+  use_Yproj_as_seed: false
+  max_rollout: 8
+  learning_rate: 0.0003
+  batch_size: 32
+  num_epochs: 10
+  num_epochs_fix: 2
+  saving_per_X_ep: 2
+  body_model_path: /home/yzhang/body_models/VPoser
+  marker_filepath: /home/yzhang/body_models/Mosh_related
+  dataset_path: /home/kaizhao/dataset/samp/Canonicalized-MP/data/
+  subsets:
+    # - HumanEva
+    - CMU
+    - MPI_HDM05
+    - BMLMovi
+    - MPI_Limits
+    # - BioMotionLab_NTroje # this one contains skating motion
+    - KIT
+    # - Transitions_mocap
+    - Eyes_Japan_Dataset

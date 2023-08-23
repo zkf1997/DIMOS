@@ -1,0 +1,35 @@
+modelconfig:
+  gender: male
+  h_dim: 128
+  n_blocks: 10
+  n_recur: 3
+  body_repr: ssm2_67
+  marker_filepath: /home/yzhang/body_models/Mosh_related
+  seq_len: 10
+  actfun: relu
+  use_cont: true
+  
+lossconfig:
+  weight_rec: 1.0
+  weight_reg_hpose: 0.01
+
+trainconfig:
+  learning_rate: 0.0003
+  batch_size: 16
+  num_epochs: 100
+  num_epochs_fix: 20
+  saving_per_X_ep: 10
+  body_model_path: /home/yzhang/body_models/VPoser
+  dataset_path: /home/yzhang/Videos/AMASS-Canonicalized-MP/data/
+  subsets:
+    # - HumanEva
+    - CMU
+    - MPI_HDM05
+    - BMLMovi
+    - MPI_Limits
+    - BioMotionLab_NTroje
+    - TotalCapture
+    - Transitions_mocap
+    - Eyes_Japan_Dataset
+
+

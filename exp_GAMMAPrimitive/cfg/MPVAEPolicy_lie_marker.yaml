@@ -1,0 +1,83 @@
+cfg_name: MPVAEPolicy_lie_marker
+wandb:
+  enable: true
+  entity: interaction
+  project: interaction_motion
+  group: marker
+  name: marker_test
+
+
+modelconfig:
+  h_dim: 512
+  z_dim: 128 #this should be consistent with GAMMAcombo
+  n_blocks: 2
+  n_recur: -1
+  body_repr: ssm2_67_condi_marker_inter
+  truncate: true
+  truncate_dist: 0.5
+  actfun: lrelu
+  is_stochastic: true
+  min_logvar: -2.5
+  max_logvar: 2.5
+  reproj_factor: 0.5
+
+lossconfig:
+  ppo_clip_val: 0.2
+  reward_discount: 0.99
+  gae_decay: 0.97
+  kld_thresh: 0.02
+  kld_weight: 1
+  use_facing_reward: false
+  use_vposer_reward: false
+  use_normalized_movement: true
+  use_slow_movement: false
+  body_ori_weight: 0.5
+  target_dist_weight: 1
+
+  active_range: 0.5
+  weight_move_toward: 0
+  weight_vp: 0
+  weight_contact_feet: 0
+  weight_contact_feet_new: 0
+  weight_velocity: 0
+  weight_target_dist: 1
+  weight_target_ori: 0
+  weight_interaction: 0
+  weight_pene: 1
+  sparse_reward: false
+
+trainconfig:
+  cfg_1frame_male: MPVAECombo_lie_1frame
+  cfg_1frame_female: MPVAECombo_lie_1frame
+  cfg_2frame_male: MPVAECombo_lie_2frame
+  cfg_2frame_female: MPVAECombo_lie_2frame
+  goal_disturb_sigma: 4
+  goal_thresh: 0.05
+  ori_thresh: 0.95
+  max_depth: 15
+
+  n_gens_1frame: 32
+  n_gens_2frame: 1
+  num_envs_per_epoch: 8
+  batch_size: 1024
+  learning_rate_p: 0.0003
+  learning_rate_v: 0.0003
+  max_train_iter_1f: 3
+  max_train_iter_2f: 3
+  num_epochs: 10000
+  saving_per_X_ep: 100
+  resume_training: true
+
+args:
+  gpu_index: 0
+  random_seed: 0
+
+  last_only: 0
+
+  exp_name: test
+  verbose: 1
+  profile: 0
+
+
+
+

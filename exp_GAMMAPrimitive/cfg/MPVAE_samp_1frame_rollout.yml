@@ -1,0 +1,41 @@
+modelconfig:
+  body_repr: ssm2_67
+  h_dim: 256
+  z_dim: 128
+  t_his: 1
+  t_pred: 9
+  use_drnn_mlp: true
+  hdims_mlp:
+    - 512
+    - 256
+  residual: true
+
+lossconfig:
+  weight_rec: 1.0
+  weight_td: 3.0
+  weight_kld: 1.0
+  annealing_kld: false
+  robust_kld: true
+
+trainconfig:
+  fine_tune: true
+  max_rollout: 8
+  learning_rate: 0.0005
+  batch_size: 128
+  num_epochs: 400
+  num_epochs_fix: 100
+  saving_per_X_ep: 100
+  dataset_path: /home/kaizhao/dataset/samp/Canonicalized-MPx10/data/
+  subsets:
+    - chair
+    - armchair
+    - highstool
+    - sofa
+    - lie_down
+    - locomotion
+    - reebokstep
+    - run
+    - table
+
+
+
