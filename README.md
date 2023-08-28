@@ -15,7 +15,7 @@
 * The rests employ the **Apache 2.0 license**. When using the code, please cite our work as above.
 
 # Updates
-* Initial release with code and documentation for motion generation demos. Documentation for model training will be updated later.  
+* Initial release with code and documentation for motion generation demos. Documentation for model training and data preprocessing will be updated later.  
 
 # Installation
 
@@ -61,7 +61,7 @@ We assume the scene and objects are given as `ply` mesh files, with z-axis point
 
 To generate object interactions, we assume the object instance is segmented and provided as a separate `ply` mesh.
 
-Due to the stochastic nature of our method, the generated results will have various quality and may have failures.
+Due to the stochastic nature of our method, the generated results will have varied quality and may have failures.
 
 ### Locomotion in 3D Scenes
 This demo generates locomotion in 3D scenes given a pair of start and target locations. You can also choose to manually specify the path consisting of waypoints.
