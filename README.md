@@ -66,33 +66,30 @@ This demo generates locomotion in 3D scenes given a pair of start and target loc
   ```
   python synthesize/demo_locomotion.py
   ```
+  From the log you can see the paths of the generated sequences.
+
 * Visualization:
   ```
   python vis_gen.py --seq_path 'results/locomotion/test_room/path_0/MPVAEPolicy_samp_collision/locomotion/policy_search/seq00*/results_ssm2_67_condi_marker_map_0.pkl'
   ```
-  The argument `seq_path` specifies the result sequences you would like to visualize, and it supports glob paths.
+  The argument `seq_path` specifies the result sequences you would like to visualize, and it supports glob paths. Other generated results can be visualized in the same way.
 ### Fine-Grained Object Interaction
 This demo generates interaction with a given object. The initial bodies are randomly sampled in front of the object. The goal interaction body markers can be loaded from provided data or generated using [COINS](https://github.com/zkf1997/COINS). 
-For COINS generation, you need to build the PROX scenes following [PROX-S setup](https://github.com/zkf1997/COINS#prox-s-dataset) due to legacy code. This will be changed later. Moreover, some of the static interaction generations from COINS can have inferior quality, and you may need to manually filter to stably get better motion results. 
+
+For COINS generation, you need to build the PROX scenes following [PROX-S setup](https://github.com/zkf1997/COINS#prox-s-dataset) even if you do not use PROX scenes due to legacy code. This will hopefully be changed later. 
+
+Moreover, some of the static interaction generations from COINS can have inferior quality, and you may need to manually filter to stably get better motion results. 
 
 * Generation:
   ```
   python synthesize/demo_interaction.py
   ```
-* Visualization:
-  ```
-  python vis_gen.py --seq_path 'results/interaction/test_room/sofa_sit_up_*/MPVAEPolicy_babel_marker/sit_1frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
-  ```
 
-### Chaining Locomotion and Interaction
-This demos shows generating complex motions involving alternation of locomotion and object interaction stages.
+### Combining Locomotion and Interaction
+This demos shows generating motions involving walking to an object and then perform interactions.
 * Generation:
   ```
-  python synthesize/demo_chain.py
-  ```
-* Visualization:
-  ```
-  python vis_gen.py --seq_path 'results/interaction/test_room/sit_sofa_0_*_down/MPVAEPolicy_babel_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
+  python synthesize/demo_loco_inter.py
   ```
 
 
