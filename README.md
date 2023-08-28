@@ -51,7 +51,8 @@ To run the code properly it is important to set the paths of data, body model, a
 Please download the [pretrained models and test data](https://drive.google.com/drive/folders/1AvM4GvdkG1OkggaQnggNeGmt2xgipKRU?usp=sharing), extract and copy it to the project folder.
 
 ### Visualization 
-* We use `trimesh` and `pyrender` for visualization. Some Visualization code may not directly run on headless servers, adaptations will be needed.  
+* We use `trimesh` and `pyrender` for visualization. Some Visualization code may not directly run on headless servers, adaptations will be needed.
+* Please refer to [pyrender viewer](https://pyrender.readthedocs.io/en/latest/generated/pyrender.viewer.Viewer.html) for the usage of the interactive viewer.
 
 # Motion Generation Demos
 We provide three demos showcasing how to synthesize various human motions in general 3D scenes, and illustrate using an example scene included in the [download link](https://drive.google.com/drive/folders/1AvM4GvdkG1OkggaQnggNeGmt2xgipKRU?usp=sharing).
@@ -86,20 +87,27 @@ Moreover, some of the static interaction generations from COINS can have inferio
   ```
   python synthesize/demo_interaction.py
   ```
-
+* Visualization:
+  ```
+  python vis_gen.py --seq_path 'results/interaction/test_room/inter_sofa_sit_up_*/MPVAEPolicy_babel_marker/sit_1frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
+  ```
+  
 ### Combining Locomotion and Interaction
 These demos show generating motions involving walking to an object and then perform interactions.
 * Generation in the test scene:
   ```
   python synthesize/demo_loco_inter.py
+  python vis_gen.py --seq_path 'results/interaction/test_room/loco_inter_sit_sofa_0_*_down/MPVAEPolicy_babel_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
   ```
 * Generation in reconstructed scenes from PROX and Replica:
 
-  To run this demo, you need to first download the PROX and Replica scenes and put them in `data/`.
+  To run this demo, you need to first download the [PROX](https://prox.is.tue.mpg.de/) and [Replica](https://github.com/facebookresearch/Replica-Dataset) scenes and put them in `data/`.
   ```
   python synthesize/get_scene.py  
   python synthesize/demo_prox.py
+  python vis_gen.py --seq_path 'results/interaction/MPH8/sit_bed_9_*_down/MPVAEPolicy_babel_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
   python synthesize/demo_replica.py
+  python vis_gen.py --seq_path 'results/interaction/room_0/sit_stool_39_*_down/MPVAEPolicy_babel_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
   ```
 ### Sequences of Alternating Locomotion and Interaction
 This demo shows generating motions involving sequences of interaction events where the human alternates between the locomotion and object interaction stages.
@@ -108,3 +116,8 @@ This demo could probably show unnatural transition when switching locomotion/int
   ```
   python synthesize/demo_chain.py
   ```
+* Visualization:
+  ```
+  python vis_gen.py --seq_path 'results/interaction/test_room/chain_sit_sofa_0_*_down/MPVAEPolicy_babel_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
+  ```
+  
