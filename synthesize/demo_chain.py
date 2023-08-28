@@ -63,7 +63,7 @@ if __name__ == '__main__':
         obj_id = 0
         target_interaction_path = f'data/test_room/{obj_category}_{action} on/goal.pkl'
         path_name = f'to_{obj_category}_{obj_id}_{seq_id}'
-        interaction_name = '_'.join([action, obj_category, str(obj_id), str(seq_id)])
+        interaction_name = '_'.join(['chain', action, obj_category, str(obj_id), str(seq_id)])
         wpath_path = scene_dir / 'waypoints' / f'{path_name}.pkl'
         wpath_path.parent.mkdir(exist_ok=True, parents=True)
         sdf_path = scene_dir / f'{obj_category}_sdf_gradient.pkl'
@@ -87,9 +87,9 @@ if __name__ == '__main__':
         smplx_params = params2torch(smplx_params)
         pelvis = bm(**smplx_params).joints[0, 0, :].detach().cpu().numpy()
 
-        start_point = np.array([-1.7, 2.35, 0])
+        start_point = np.array([-2.5, 0.5, 0])
         # r = torch.cuda.FloatTensor(1).uniform_() * 0.4 + 0.6
-        r = 0.6
+        r = 0.8
         body_orient = torch.cuda.FloatTensor(smplx_params['global_orient']).squeeze()
         forward_dir = pytorch3d.transforms.axis_angle_to_matrix(body_orient)[:, 2]
         forward_dir[2] = 0
@@ -109,7 +109,7 @@ if __name__ == '__main__':
         with open(wpath_path, 'wb') as f:
             pickle.dump(wpath, f)
 
-        command = "python synthesize/gen_locomotion_unify.py --goal_thresh 0.5 --goal_thresh_final 0.2 --max_depth 60 --num_gen1 128 --num_gen2 16 --num_expand 8 " \
+        command = "python synthesize/gen_locomotion_unify.py --goal_thresh 0.5 --goal_thresh_final 0.2 --max_depth 120 --num_gen1 128 --num_gen2 16 --num_expand 8 " \
                   "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_samp_collision/locomotion " \
                   "--gen_name policy_search --num_sequence 1 " \
                   "--random_seed {} --scene_path {} --scene_name {} --navmesh_path {} --floor_height {:.2f} --wpath_path {} --path_name {} " \
@@ -133,7 +133,7 @@ if __name__ == '__main__':
 
         last_motion_path = f'results/interaction/{scene_name}/{interaction_name}_down/MPVAEPolicy_babel_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
         with open(target_point_path, 'wb') as f:
-            # pickle.dump(target_point + forward_dir.detach().cpu().numpy() * 0.3, f)
+            # pickle.dump(target_point - forward_dir.detach().cpu().numpy() * 0.2, f)
             pickle.dump(target_point, f)
         """stand up"""
         command = "python synthesize/gen_interaction_unify.py --goal_thresh_final 0.3 --max_depth 10 --num_gen1 128 --num_gen2 32 --num_expand 4 " \
@@ -152,8 +152,8 @@ if __name__ == '__main__':
         obj_category = 'sofa'
         obj_id = 0
         target_interaction_path = f'data/test_room/{obj_category}_{action} on/goal.pkl'
-        path_name = 'to_sofa_{}'.format(seq_id)
-        interaction_name = '_'.join([action, obj_category, str(obj_id), str(seq_id)])
+        path_name = f'to_{obj_category}_{obj_id}_{seq_id}'
+        interaction_name = '_'.join(['chain', action, obj_category, str(obj_id), str(seq_id)])
         wpath_path = scene_dir / 'waypoints' / f'{path_name}.pkl'
         wpath_path.parent.mkdir(exist_ok=True, parents=True)
         sdf_path = scene_dir / f'{obj_category}_sdf_gradient.pkl'
@@ -197,7 +197,7 @@ if __name__ == '__main__':
             pickle.dump(wpath, f)
 
 
-        command = "python synthesize/gen_locomotion_unify.py --goal_thresh 0.5 --goal_thresh_final 0.3 --max_depth 60 --num_gen1 128 --num_gen2 32 --num_expand 8 " \
+        command = "python synthesize/gen_locomotion_unify.py --goal_thresh 0.5 --goal_thresh_final 0.3 --max_depth 120 --num_gen1 128 --num_gen2 32 --num_expand 8 " \
                   "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_samp_collision/locomotion " \
                   "--gen_name policy_search --num_sequence 1 " \
                   "--random_seed {} --scene_path {} --scene_name {} --navmesh_path {} --floor_height {:.2f} --wpath_path {} --path_name {} --last_motion_path {} " \

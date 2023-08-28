@@ -154,9 +154,9 @@ if __name__ == "__main__":
     with open(Path.joinpath(project_folder, "data", 'test.pkl'), 'rb') as data_file:
         test_data = pickle.load(data_file)
     # load interactions containing specified interactions and visualize
-    # data = get_interaction_segments(['sit on-sofa', 'touch-table'], train_data, mode='verb-noun')
-    # print(len(data))
-    # visualize(data, full_scene=False, skip_frame=1, start_frame=0)
+    data = get_interaction_segments(['sit on-bed'], train_data, mode='verb-noun')
+    print(len(data))
+    visualize(data, full_scene=False, skip_frame=1, start_frame=0)
     data = get_interaction_segments(['lie on'], train_data, mode='verb')
     print(len(data))
     visualize(data, full_scene=False, skip_frame=1)

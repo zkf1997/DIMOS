@@ -56,9 +56,11 @@ Please download the [pretrained models and test data](https://drive.google.com/d
 # Motion Generation Demos
 We provide three demos showcasing how to synthesize various human motions in general 3D scenes, and illustrate using an example scene included in the [download link](https://drive.google.com/drive/folders/1AvM4GvdkG1OkggaQnggNeGmt2xgipKRU?usp=sharing).
 
-We assume the scene is given as a `ply` mesh file, with z-axis pointing up, and the floor plane is at z=0.
+We assume the scene and objects are given as `ply` mesh files, with z-axis pointing up, and the floor plane is at z=0.
 
 To generate object interactions, we assume the object instance is segmented and provided as a separate `ply` mesh.
+
+Due to the stochastic nature of our method, the generated results will have various quality and may have failures.
 
 ### Locomotion in 3D Scenes
 This demo generates locomotion in 3D scenes given a pair of start and target locations. You can also choose to manually specify the path consisting of waypoints.
@@ -76,7 +78,7 @@ This demo generates locomotion in 3D scenes given a pair of start and target loc
 ### Fine-Grained Object Interaction
 This demo generates interaction with a given object. The initial bodies are randomly sampled in front of the object. The goal interaction body markers can be loaded from provided data or generated using [COINS](https://github.com/zkf1997/COINS). 
 
-For COINS generation, you need to build the PROX scenes following [PROX-S setup](https://github.com/zkf1997/COINS#prox-s-dataset) even if you do not use PROX scenes due to legacy code. This will hopefully be changed later. 
+For COINS generation, you need to build the PROX scenes following [PROX-S setup](https://github.com/zkf1997/COINS#prox-s-dataset) even if you do not use PROX scenes due to legacy code. 
 
 Moreover, some of the static interaction generations from COINS can have inferior quality, and you may need to manually filter to stably get better motion results. 
 
@@ -86,10 +88,23 @@ Moreover, some of the static interaction generations from COINS can have inferio
   ```
 
 ### Combining Locomotion and Interaction
-This demos shows generating motions involving walking to an object and then perform interactions.
-* Generation:
+These demos show generating motions involving walking to an object and then perform interactions.
+* Generation in the test scene:
   ```
   python synthesize/demo_loco_inter.py
   ```
+* Generation in reconstructed scenes from PROX and Replica:
 
-
+  To run this demo, you need to first download the PROX and Replica scenes and put them in `data/`.
+  ```
+  python synthesize/get_scene.py  
+  python synthesize/demo_prox.py
+  python synthesize/demo_replica.py
+  ```
+### Sequences of Alternating Locomotion and Interaction
+This demo shows generating motions involving sequences of interaction events where the human alternates between the locomotion and object interaction stages.
+This demo could probably show unnatural transition when switching locomotion/interaction stages. 
+* Generation in the test scene:
+  ```
+  python synthesize/demo_chain.py
+  ```

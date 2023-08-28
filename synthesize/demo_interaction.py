@@ -71,7 +71,7 @@ if __name__ == "__main__":
     num_seq = 4
     for seq_id in range(num_seq):
         target_interaction_path = random.choice(interaction_path_list)
-        interaction_name = obj_name + '_' + action_out
+        interaction_name = 'inter_' + obj_name + '_' + action_out
         target_point_path = Path('results', 'tmp', scene_name, interaction_name, 'target_point.pkl')
         target_point_path.parent.mkdir(exist_ok=True, parents=True)
         target_body_path = Path('results', 'tmp', scene_name, interaction_name, 'target_body.pkl')

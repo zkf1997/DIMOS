@@ -66,7 +66,7 @@ if __name__ == '__main__':
         obj_id = 0
         target_interaction_path = f'data/test_room/{obj_category}_{action} on/goal.pkl'
         path_name = f'to_{obj_category}_{obj_id}_{seq_id}'
-        interaction_name = '_'.join(['loco', action, obj_category, str(obj_id), str(seq_id)])
+        interaction_name = '_'.join(['loco_inter', action, obj_category, str(obj_id), str(seq_id)])
         wpath_path = scene_dir / 'waypoints' / f'{path_name}.pkl'
         wpath_path.parent.mkdir(exist_ok=True, parents=True)
         sdf_path = scene_dir / f'{obj_category}_sdf_gradient.pkl'

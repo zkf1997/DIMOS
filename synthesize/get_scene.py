@@ -320,7 +320,7 @@ class ReplicaScene:
         self.sdf = sdf
         self.sdf_config = {'grid_min': grid_min, 'grid_max': grid_max, 'grid_dim': grid_dim}
 
-        self.raw_floor_height = floor_height = self.get_floor_height()
+        self.floor_height = self.raw_floor_height = floor_height = self.get_floor_height()
         if zero_floor:
             self.mesh.vertices[:, 2] -= floor_height
             for instance in self.instances:
@@ -504,56 +504,42 @@ def export_scene(scene_name, obj_list):
 # with open(scene_dir + 'info_semantic.json') as f:
 #     info = json.load(f)
 
-replica_folder = Path('/mnt/atlas_root/vlg-nfs/kaizhao/datasets/replica')
+replica_folder = Path('data/replica')
 if __name__ == "__main__":
-    # scene = ShapenetScene(Path('/home/kaizhao/projects/gamma/data/shapenet_real/Armchairs/2d808b6451253b7e7c7920f6a65a54d/model.obj'), build=False, voxel_resolution=128)
-    # scene.visualize()
 
-    # apartment_2, 115
-    # scene_name = 'room_0'
-    # obj_list = [73, 74, 39, 41, 9, 77]
-    # export_scene(scene_name, obj_list)
+    scene_name = 'room_0'
+    export_ids = [73, 74, 39, 41, 9, 77]
+    # build from original scene
+    scene = ReplicaScene(scene_name, replica_folder, build=True, zero_floor=False)
+    print(scene.floor_height)
+    scene_floor = deepcopy(scene.mesh)
+    scene_floor.vertices[:, 2] -= scene.floor_height
+    scene_floor.export(replica_folder / scene_name / 'mesh_floor.ply')
+    # build from translated scene, floor at z=0
+    scene = ReplicaScene(scene_name, replica_folder, build=False, zero_floor=True)
+    print(scene.floor_height)
+    for obj_id in export_ids:
+        obj_category = scene.category_names[obj_id]
+        instance_mesh = scene.get_mesh_with_accessory(obj_id)
+        instance_mesh.export(replica_folder / scene_name / 'instances' / f'{obj_category}_{obj_id}.ply')
 
-    scene = ReplicaScene('apartment_1', replica_folder, build=False, zero_floor=False)
-    scene.visualize()
+    import sys
+    sys.path.append(os.getcwd())
+    sys.path.append('./coins')
+    sys.path.append('./coins/interaction')
+    from data.scene import scenes, to_trimesh
+    scene_name = 'MPH8'
+    scene_dir = Path('data/PROX') / scene_name
+    scene_dir.mkdir(exist_ok=True, parents=True)
+    export_ids = [9]
+    scene = scenes[scene_name]
+    scene_floor = to_trimesh(scene.mesh)
+    scene_floor.vertices[:, 2] -= scene.get_floor_height()
+    scene_floor.export( scene_dir / 'scene_floor.ply')
+    for obj_id in export_ids:
+        obj_category = scene.object_nodes[obj_id].category_name
+        instance_mesh = deepcopy(scene.get_mesh_with_accessory(obj_id))
+        instance_mesh.vertices[:, 2] -= scene.get_floor_height()
+        instance_mesh.export(scene_dir / f'{obj_category}_{obj_id}.ply')
 
-    exit()
 
-    scene_names = [
-                   'apartment_0',
-                   'apartment_1',
-                   'apartment_2',
-                   'frl_apartment_0',
-                   'frl_apartment_1',
-                   'frl_apartment_2',
-                   'frl_apartment_3',
-                   'frl_apartment_4',
-                   'frl_apartment_5',
-                   'hotel_0',
-                   'office_0',
-                   'office_1',
-                   'office_2',
-                   'office_3',
-                   'office_4',
-                   'room_0',
-                   'room_1',
-                   'room_2',
-                   ]
-    for scene_name in scene_names:
-        print(scene_name)
-        # build from original scene
-        scene = ReplicaScene(scene_name, replica_folder, build=True, zero_floor=False)
-        print(scene.floor_height)
-        scene_floor = deepcopy(scene.mesh)
-        scene_floor.vertices[:, 2] -= scene.floor_height
-        scene_floor.export(replica_folder / scene_name / 'mesh_floor.ply')
-        # build from translated scene, floor at z=0
-        scene = ReplicaScene(scene_name, replica_folder, build=False, zero_floor=True)
-        print(scene.floor_height)
-
-    # bbox1 = scene.instances[72].bounds
-    # bbox2 = scene.instances[73].bounds
-    # print(bbox_intersect(bbox1, bbox2))
-    # scene.get_mesh_with_accessory(72, visualize=True)
-    # scene.get_mesh_with_accessory(73, visualize=True)
-    # scene.get_mesh_with_accessory(74, visualize=True)

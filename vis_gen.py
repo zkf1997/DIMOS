@@ -637,11 +637,11 @@ def vis_scene_nav():
 parser = argparse.ArgumentParser()
 parser.add_argument('--epoch', type=int, default=0)
 parser.add_argument('--env', type=str, default='0')
-parser.add_argument('--slow_rate', type=int, default=1)
-parser.add_argument('--start_frame', type=int, default=0)
+parser.add_argument('--slow_rate', type=int, default=1, help="slow down animation playing speed by specified rate")
+parser.add_argument('--start_frame', type=int, default=0, help="number of the frame to start playing animation")
 parser.add_argument('--max_vis', type=int, default=8, help="maximum number of sequences to be visualized")
 parser.add_argument('--seq_path', type=str, help="paths of result requences, support glob format")
-parser.add_argument('--add_floor', type=int, default=0)
+parser.add_argument('--add_floor', type=int, default=0, help="whether to add a squared floor in visualization")
 args = parser.parse_args()
 
 model_path = "/home/kaizhao/dataset/models_smplx_v1_1/models"
