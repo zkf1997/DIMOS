@@ -642,6 +642,7 @@ parser.add_argument('--start_frame', type=int, default=0, help="number of the fr
 parser.add_argument('--max_vis', type=int, default=8, help="maximum number of sequences to be visualized")
 parser.add_argument('--seq_path', type=str, help="paths of result requences, support glob format")
 parser.add_argument('--add_floor', type=int, default=0, help="whether to add a squared floor in visualization")
+parser.add_argument('--vis_navmesh', type=int, default=0, help="whether to show navmesh visualization")
 args = parser.parse_args()
 
 model_path = "/home/kaizhao/dataset/models_smplx_v1_1/models"
@@ -652,7 +653,7 @@ device = torch.device('cuda')
 vis_results_new(
     list(glob.glob(args.seq_path))[:args.max_vis],
     start_frame=args.start_frame,
-    vis_navmesh=True,
+    vis_navmesh=args.vis_navmesh,
     vis_marker=True, vis_pelvis=True, vis_object=True, add_floor=args.add_floor,
     slow_rate=args.slow_rate
 )
