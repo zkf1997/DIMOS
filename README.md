@@ -1,8 +1,15 @@
 # DIMOS: Synthesizing Diverse Human Motions in 3D Indoor Scenes
 
-
-
 [[website](https://zkf1997.github.io/DIMOS/)] [[paper](https://arxiv.org/abs/2305.12411)] 
+
+```
+@inproceedings{Zhao:ICCV:2023,
+   title = {Synthesizing Diverse Human Motions in 3D Indoor Scenes},
+   author = {Zhao, Kaifeng and Zhang, Yan and Wang, Shaofei and Beeler, Thabo and and Tang, Siyu},
+   booktitle = {International conference on computer vision (ICCV)},
+   year = {2023}
+}
+```
 
 ![teaser](https://zkf1997.github.io/DIMOS/images/teaser_canonical.png)
 
@@ -12,7 +19,7 @@
     * Code/model/data relevant to the AMASS dataset follows its own license.
     * Blender and its SMPL-X add-on employ their respective license.
 
-* The rests employ the **Apache 2.0 license**. When using the code, please cite our work as above.
+* The rests employ the **Apache 2.0 license**.
 
 # Updates
 * Initial release with code and documentation for motion generation demos. Documentation for model training and data preprocessing will be updated later.  
