@@ -8,22 +8,12 @@ def get_host_name():
 
 # smplx body model
 def get_body_model_path():
-    if 'vlg-atlas' in hostname:
-        bmpath = '/vlg-nfs/kaizhao/datasets/models_smplx_v1_1/models/'
-    elif 'wks' in hostname:
-        bmpath = '/home/kaizhao/dataset/models_smplx_v1_1/models/'
-    else:
-        raise ValueError('not stored here')
+    bmpath = 'data/models_smplx_v1_1/models/'
     return bmpath
 
 # marker placement data
 def get_body_marker_path():
-    if 'vlg-atlas' in hostname:
-        mkpath = '/vlg-nfs/kaizhao/datasets/models_smplx_v1_1/models/markers'
-    elif 'wks' in hostname:
-        mkpath = '/home/kaizhao/dataset/models_smplx_v1_1/models/markers'
-    else:
-        raise ValueError('not stored here')
+    mkpath = 'data/models_smplx_v1_1/models/markers'
     return mkpath
 
 def get_amass_canonicalized_path():

@@ -7,7 +7,7 @@ import platform
 
 local_machine = (platform.node() == 'dalcowks')
 
-proxe_base_folder = Path("/media/kaizhao/hdd/projects/COINS/proxe")
+proxe_base_folder = Path("data/proxs")
 scene_folder = Path.joinpath(proxe_base_folder, "scenes_semantics")
 sdf_folder = Path.joinpath(proxe_base_folder, "sdf")
 cam2world_folder = Path.joinpath(proxe_base_folder, "cam2world")

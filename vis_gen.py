@@ -645,8 +645,8 @@ parser.add_argument('--add_floor', type=int, default=0, help="whether to add a s
 parser.add_argument('--vis_navmesh', type=int, default=0, help="whether to show navmesh visualization")
 args = parser.parse_args()
 
-model_path = "/home/kaizhao/dataset/models_smplx_v1_1/models"
-shapenet_dir = '/mnt/atlas_root/vlg-data/ShapeNetCore.v2/'
+model_path = "data/models_smplx_v1_1/models"
+shapenet_dir = 'data/ShapeNetCore.v2/'
 gender = "male"
 device = torch.device('cuda')
 
