@@ -122,7 +122,7 @@ if __name__ == "__main__":
         last_motion_path = f'results/locomotion/{scene_name}/{path_name}/MPVAEPolicy_samp_collision/locomotion/policy_search/seq000/results_ssm2_67_condi_marker_map_0.pkl'
         """sit down"""
         command = "python synthesize/gen_interaction_unify.py --goal_thresh_final -1 --max_depth 15 --num_gen1 128 --num_gen2 32 --num_expand 4 " \
-                  "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_babel_marker/sit_2frame " \
+                  "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_sit_marker/sit_2frame " \
                   "--gen_name policy_search --num_sequence 1 " \
                   "--random_seed {} --scene_path {} --scene_name {} --sdf_path {} --mesh_path {} --floor_height {:.2f} " \
                   "--target_body_path {} --interaction_name {} --last_motion_path {} " \

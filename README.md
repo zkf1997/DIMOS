@@ -93,7 +93,7 @@ Due to the stochastic nature of our method, the generated results will have vari
 
 ### Locomotion in 3D Scenes
 This demo generates locomotion in 3D scenes given a pair of start and target locations. Collision-free waypoints are generated using navigation mesh-based path-finding. 
-You can also choose to manually specify the path of waypoints in the script.
+You can also choose to manually specify the path of waypoints in the script. Visualization of the navmesh path-finding result can be switched on/off using the `visualize` variable. 
 * Generation:
   ```
   python synthesize/demo_locomotion.py
@@ -123,7 +123,7 @@ Moreover, some of the static interaction generations from COINS can have inferio
   ```
 * Visualization:
   ```
-  python vis_gen.py --seq_path 'results/interaction/test_room/inter_sofa_sit_up_*/MPVAEPolicy_babel_marker/sit_1frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
+  python vis_gen.py --seq_path 'results/interaction/test_room/inter_sofa_sit_up_*/MPVAEPolicy_sit_marker/sit_1frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
   ```
   
 ### Combining Locomotion and Interaction
@@ -131,7 +131,7 @@ These demos show generating motions involving walking to an object and then perf
 * Generation in the test scene:
   ```
   python synthesize/demo_loco_inter.py
-  python vis_gen.py --seq_path 'results/interaction/test_room/loco_inter_sit_sofa_0_*_down/MPVAEPolicy_babel_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
+  python vis_gen.py --seq_path 'results/interaction/test_room/loco_inter_sit_sofa_0_*_down/MPVAEPolicy_sit_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
   ```
 * Generation in reconstructed scenes from PROX and Replica:
 
@@ -139,9 +139,9 @@ These demos show generating motions involving walking to an object and then perf
   ```
   python synthesize/get_scene.py  
   python synthesize/demo_prox.py
-  python vis_gen.py --seq_path 'results/interaction/MPH8/sit_bed_9_*_down/MPVAEPolicy_babel_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
+  python vis_gen.py --seq_path 'results/interaction/MPH8/sit_bed_9_*_down/MPVAEPolicy_sit_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
   python synthesize/demo_replica.py
-  python vis_gen.py --seq_path 'results/interaction/room_0/sit_stool_39_*_down/MPVAEPolicy_babel_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
+  python vis_gen.py --seq_path 'results/interaction/room_0/sit_stool_39_*_down/MPVAEPolicy_sit_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
   ```
 ### Sequences of Alternating Locomotion and Interaction
 This demo shows generating motions involving sequences of interaction events where the human alternates between the locomotion and object interaction stages.
@@ -152,6 +152,6 @@ This demo could probably show unnatural transition when switching locomotion/int
   ```
 * Visualization:
   ```
-  python vis_gen.py --seq_path 'results/interaction/test_room/chain_sit_sofa_0_*_down/MPVAEPolicy_babel_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
+  python vis_gen.py --seq_path 'results/interaction/test_room/chain_sit_sofa_0_*_down/MPVAEPolicy_sit_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
   ```
   

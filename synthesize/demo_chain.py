@@ -121,7 +121,7 @@ if __name__ == '__main__':
         last_motion_path = f'results/locomotion/{scene_name}/{path_name}/MPVAEPolicy_samp_collision/locomotion/policy_search/seq000/results_ssm2_67_condi_marker_map_0.pkl'
         """sit down"""
         command = "python synthesize/gen_interaction_unify.py --goal_thresh_final -1 --max_depth 15 --num_gen1 128 --num_gen2 32 --num_expand 4 " \
-                  "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_babel_marker/sit_2frame " \
+                  "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_sit_marker/sit_2frame " \
                   "--gen_name policy_search --num_sequence 1 " \
                   "--random_seed {} --scene_path {} --scene_name {} --sdf_path {} --mesh_path {} --floor_height {:.2f} " \
                   "--target_body_path {} --interaction_name {} --last_motion_path {} " \
@@ -131,13 +131,13 @@ if __name__ == '__main__':
         os.system(command)
 
 
-        last_motion_path = f'results/interaction/{scene_name}/{interaction_name}_down/MPVAEPolicy_babel_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
+        last_motion_path = f'results/interaction/{scene_name}/{interaction_name}_down/MPVAEPolicy_sit_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
         with open(target_point_path, 'wb') as f:
             # pickle.dump(target_point - forward_dir.detach().cpu().numpy() * 0.2, f)
             pickle.dump(target_point, f)
         """stand up"""
         command = "python synthesize/gen_interaction_unify.py --goal_thresh_final 0.3 --max_depth 10 --num_gen1 128 --num_gen2 32 --num_expand 4 " \
-                  "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_babel_marker/sit_2frame " \
+                  "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_sit_marker/sit_2frame " \
                   "--gen_name policy_search --num_sequence 1 " \
                   "--random_seed {} --scene_path {} --scene_name {} --sdf_path {} --mesh_path {} --floor_height {:.2f} " \
                   "--target_point_path {} --interaction_name {} --last_motion_path {} " \
@@ -146,7 +146,7 @@ if __name__ == '__main__':
         print(command)
         os.system(command)
 
-        last_motion_path = f'results/interaction/{scene_name}/{interaction_name}_up/MPVAEPolicy_babel_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
+        last_motion_path = f'results/interaction/{scene_name}/{interaction_name}_up/MPVAEPolicy_sit_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
         start_point = start_target[1]
         action = 'sit'
         obj_category = 'sofa'
@@ -209,7 +209,7 @@ if __name__ == '__main__':
         last_motion_path = f'results/locomotion/{scene_name}/{path_name}/MPVAEPolicy_samp_collision/locomotion/policy_search/seq000/results_ssm2_67_condi_marker_map_0.pkl'
         """sit down"""
         command = "python synthesize/gen_interaction_unify.py --goal_thresh_final -1 --max_depth 12 --num_gen1 128 --num_gen2 32 --num_expand 4 " \
-                  "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_babel_marker/sit_2frame " \
+                  "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_sit_marker/sit_2frame " \
                   "--gen_name policy_search --num_sequence 1 " \
                   "--random_seed {} --scene_path {} --scene_name {} --sdf_path {} --mesh_path {} --floor_height {:.2f} " \
                   "--target_body_path {} --interaction_name {} --last_motion_path {} " \

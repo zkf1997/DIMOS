@@ -50,6 +50,7 @@ if __name__ == "__main__":
     # get tight navmesh for path planning
     navmesh_loose = get_navmesh(navmesh_loose_path, scene_path, agent_radius=0.4, floor_height=floor_height, visualize=True)
 
+    visualize = False
     path_idx = 0
     path_name = f'path_{path_idx}'
     wpath_path = scene_dir / f'{path_name}.pkl'
@@ -61,7 +62,7 @@ if __name__ == "__main__":
     start_target = np.stack([start_point, target_point])
     # find collision free path
     scene_mesh = trimesh.load(scene_path, force='mesh')
-    wpath = path_find(navmesh_loose, start_target[0], start_target[1], visualize=True, scene_mesh=scene_mesh)
+    wpath = path_find(navmesh_loose, start_target[0], start_target[1], visualize=visualize, scene_mesh=scene_mesh)
 
     """optional: manually specify waypoints"""
     # wpath = np.array([
