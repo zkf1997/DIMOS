@@ -90,10 +90,14 @@ To generate object interactions, we assume the object instance is segmented and 
 Each demo is provided as a single script and can be adapted to general scenes you want to test by changing the scene/object mesh paths. 
 By running the demos, you can generate [**random**]() motions in given scenes. 
 Due to the stochastic nature of our method, the generated results will have varied quality and may have failures.
+ 
 
 ### Locomotion in 3D Scenes
 This demo generates locomotion in 3D scenes given a pair of start and target locations. Collision-free waypoints are generated using navigation mesh-based path-finding. 
-You can also choose to manually specify the path of waypoints in the script. Visualization of the navmesh path-finding result can be switched on/off using the `visualize` variable. 
+
+You can also choose to manually specify the path of waypoints in the script. Visualization of the navmesh path-finding result can be switched on/off using the `visualize` variable.
+
+You may see some pop-up visualization windows for navigation mesh generation and path-finding. You can close the window after confirming the results are reasonable, then the generation will start.
 * Generation:
   ```
   python synthesize/demo_locomotion.py

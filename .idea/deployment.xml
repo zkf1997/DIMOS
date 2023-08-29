@@ -66,13 +66,6 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="kaizhao@cnb-d102-22.inf.ethz.ch:22 password (project level)">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
     </serverData>
     <option name="myAutoUpload" value="ALWAYS" />
   </component>

@@ -60,7 +60,7 @@ if __name__ == '__main__':
     seq_num = 4
     visualize = False
     for seq_id in range(seq_num):
-        scene_dir = Path('./data/test_room')
+        # scene_dir = Path('./data/test_room')
         action = 'sit'
         obj_category = 'sofa'
         obj_id = 0
