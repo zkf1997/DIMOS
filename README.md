@@ -88,7 +88,7 @@ We assume the scene and objects are given as `ply` mesh files, with z-axis point
 To generate object interactions, we assume the object instance is segmented and provided as a separate `ply` mesh.
 
 Each demo is provided as a single script and can be adapted to general scenes you want to test by changing the scene/object mesh paths. 
-By running the demos, you can generate [random]() motions in given scenes. 
+By running the demos, you can generate [**random**]() motions in given scenes. 
 Due to the stochastic nature of our method, the generated results will have varied quality and may have failures.
 
 ### Locomotion in 3D Scenes
