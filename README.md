@@ -14,7 +14,7 @@
 ![teaser](https://zkf1997.github.io/DIMOS/images/teaser_canonical.png)
 
 # License
-* Third-party software employs their respective license. Here are some examples:
+* Third-party software and datasets employs their respective license. Here are some examples:
     * Code/model/data relevant to the SMPL-X body model follows its own license.
     * Code/model/data relevant to the AMASS dataset follows its own license.
     * Blender and its SMPL-X add-on employ their respective license.
