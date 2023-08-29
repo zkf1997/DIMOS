@@ -44,8 +44,8 @@ conda config --set solver libmamba
 
 ### Required External Data
 * [SMPL-X body model](https://smpl-x.is.tue.mpg.de/)
-* [VPoser v1.0**](https://smpl-x.is.tue.mpg.de/)
-* [CMU 41** marker placement](https://drive.google.com/file/d/1CcNBZCXA7_Naa0SGlYKCxk_ecnzftbSj/view?usp=sharing) from [link](http://mocap.cs.cmu.edu/)
+* [VPoser v1.0](https://smpl-x.is.tue.mpg.de/)
+* [CMU 41 marker placement](https://drive.google.com/file/d/1CcNBZCXA7_Naa0SGlYKCxk_ecnzftbSj/view?usp=sharing) from [link](http://mocap.cs.cmu.edu/)
 * [SSM2 67 marker placement](https://drive.google.com/file/d/1ozQuVjXoDLiZ3YGV-7RpauJlunPfcx_d/view?usp=sharing) from [link](https://amass.is.tue.mpg.de/)
 * [ShapeNet](https://shapenet.org/) (Optional if you only want to test demos)
 * [Replica](https://github.com/facebookresearch/Replica-Dataset) (Optional if you only want to test demos)
