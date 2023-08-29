@@ -156,7 +156,7 @@ def get_forward_dir(interaction_path_dir):
 
 if __name__ == "__main__":
     scene_dir = Path('./data/test_room')
-    action_in = 'sit on'
+    action_in = 'sit on' # choose from ['sit on', 'lie on'], 'lie on' can not be applied to the 'chair'
     action_out = action_in.split(' ')[0]
     floor_height = 0
     scene_path = scene_dir / 'room.ply'
