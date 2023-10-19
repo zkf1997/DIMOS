@@ -177,7 +177,7 @@ if __name__ == "__main__":
         print(command)
         os.system(command)
         interaction_path_dir = Path(
-            'results/coins/two_stage/test/optimization_after_get_body') / action_in / f'{action_in}_{obj_name}_0/'
+            f'results/coins/two_stage/{scene_name}/test/optimization_after_get_body') / action_in / f'{action_in}_{obj_name}_0/'
     interaction_path_list = list(interaction_path_dir.glob('*.pkl'))
     interaction_path_list = [p for p in interaction_path_list if p.name != 'results.pkl']
     if len(interaction_path_list) == 0:

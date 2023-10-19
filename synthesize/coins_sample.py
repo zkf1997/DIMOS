@@ -652,7 +652,7 @@ if __name__ == '__main__':
     parser.add_argument("--scene_path", type=str, default='data/test_room/room.ply')
     parser.add_argument("--action", type=str, default='sit on')
     args = parser.parse_args()
-    args.save_dir = Path('results/coins') / args.save_dir
+    args.save_dir = Path('results/coins') / args.save_dir / args.scene_name
 
     device = torch.device('cuda')
     if torch.cuda.is_available():
