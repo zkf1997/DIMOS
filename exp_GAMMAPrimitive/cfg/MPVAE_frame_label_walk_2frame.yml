@@ -1,0 +1,33 @@
+modelconfig:
+  body_repr: ssm2_67
+  h_dim: 256
+  z_dim: 128
+  t_his: 2
+  t_pred: 8
+  use_drnn_mlp: true
+  hdims_mlp:
+    - 512
+    - 256
+  residual: true
+
+lossconfig:
+  weight_rec: 1.0
+  weight_td: 3.0
+  weight_kld: 1.0
+  annealing_kld: false
+  robust_kld: true
+
+trainconfig:
+  learning_rate: 0.0005
+  batch_size: 64
+  num_epochs: 300
+  num_epochs_fix: 60
+  saving_per_X_ep: 30
+  dataset_path: /home/kaizhao/dataset/amass/DIMOS_frame_label/Canonicalized-MP/data/
+  subsets:
+    - walk
+    - locomotion
+
+
+
+

@@ -44,13 +44,13 @@ if __name__ == "__main__":
     floor_height = 0
     base_dir = Path('data/PROX') / scene_name
     scene_path = base_dir / 'scene_floor.ply'
-    navmesh_tight_path = base_dir / 'MPH8_navmesh_tight.ply'
-    navmesh_loose_path = base_dir / 'MPH8_navmesh_loose.ply'
+    navmesh_tight_path = base_dir / f'{scene_name}_navmesh_tight.ply'
+    navmesh_loose_path = base_dir / f'{scene_name}_navmesh_loose.ply'
     # get loose navmesh for path planning
     navmesh_tight = get_navmesh(navmesh_tight_path, scene_path, agent_radius=0.05, floor_height=floor_height,
                                 visualize=True)
     # get tight navmesh for path planning
-    navmesh_loose = get_navmesh(navmesh_loose_path, scene_path, agent_radius=0.3, floor_height=floor_height,
+    navmesh_loose = get_navmesh(navmesh_loose_path, scene_path, agent_radius=0.2, floor_height=floor_height,
                                 visualize=True)
 
 

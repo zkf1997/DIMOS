@@ -39,26 +39,33 @@ def get_navmesh(navmesh_path, scene_path, agent_radius, floor_height=0.0, visual
 
 
 if __name__ == "__main__":
+    visualize = False
     scene_name = 'test_room'
     scene_dir = Path('./data/test_room')
     scene_path = scene_dir / 'room.ply'
+    # scene_name = 'werkraum'
+    # scene_dir = Path('./data/PROX/Werkraum')
+    # scene_path = scene_dir / 'scene_floor.ply'
     floor_height = 0
     navmesh_tight_path = scene_dir / 'navmesh_tight.ply'
     navmesh_loose_path = scene_dir / 'navmesh_loose.ply'
+    # get tight navmesh for local map sensing
+    navmesh_tight = get_navmesh(navmesh_tight_path, scene_path, agent_radius=0.05, floor_height=floor_height, visualize=visualize)
     # get loose navmesh for path planning
-    navmesh_tight = get_navmesh(navmesh_tight_path, scene_path, agent_radius=0.05, floor_height=floor_height, visualize=True)
-    # get tight navmesh for path planning
-    navmesh_loose = get_navmesh(navmesh_loose_path, scene_path, agent_radius=0.4, floor_height=floor_height, visualize=True)
+    navmesh_loose = get_navmesh(navmesh_loose_path, scene_path, agent_radius=0.2, floor_height=floor_height, visualize=visualize)
 
-    visualize = False
     path_idx = 0
-    path_name = f'path_{path_idx}'
+    path_name = f'{scene_name}_path_cmp2_{path_idx}'
     wpath_path = scene_dir / f'{path_name}.pkl'
 
     """automatic path finding"""
     # specify start and target location
     start_point = np.array([-1.7, 2.35, 0])
     target_point = np.array([-1.4, 0.54, 0])
+    # start_point = np.array([-0.68, -1.83, 0])
+    # target_point = np.array([1.15, 1.62, 0])
+    # start_point = np.array([2.52, 0.58, 0])
+    # target_point = np.array([-2.85, -1.34, 0])
     start_target = np.stack([start_point, target_point])
     # find collision free path
     scene_mesh = trimesh.load(scene_path, force='mesh')
@@ -75,20 +82,14 @@ if __name__ == "__main__":
         pickle.dump(wpath, f)
     max_depth = 30 * len(wpath)
 
-    num_sequence = 4
-    command = "python synthesize/gen_locomotion_unify.py --goal_thresh 0.5 --goal_thresh_final 0.2 --max_depth {} --num_gen1 128 --num_gen2 16 --num_expand 8 " \
-              "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_samp_collision/locomotion " \
-              "--gen_name policy_search --num_sequence {} " \
-              "--scene_path {} --scene_name {} --navmesh_path {} --floor_height {:.2f} --wpath_path {} --path_name {} " \
-              "--weight_pene 1 " \
-              "--visualize 0 --use_zero_pose 1 --use_zero_shape 1 --random_orient 0 --clip_far 1".format(
-        max_depth,
-        num_sequence,
-        scene_path,
-        scene_name,
-        navmesh_tight_path,
-        floor_height,
-        wpath_path,
-        path_name)
-    print(command)
+    num_sequence = 8
+    cfg_policy = '../results/exp_GAMMAPrimitive/MPVAEPolicy_frame_label_walk_collision/map_walk'
+    # cfg_policy = '../results/exp_GAMMAPrimitive/MPVAEPolicy_frame_label_walk_collision/map_walk_init_pose_from_data'
+    command = f"python synthesize/gen_locomotion_unify.py --goal_thresh 0.5 --goal_thresh_final 0.2 --max_depth {max_depth} --num_gen1 128 --num_gen2 16 --num_expand 8 " \
+              f"--project_dir . --cfg_policy {cfg_policy} " \
+              f"--gen_name policy_search --num_sequence {num_sequence} " \
+              f"--scene_path {scene_path} --scene_name {scene_name} --navmesh_path {navmesh_tight_path} --floor_height {floor_height:.2f} --wpath_path {wpath_path} --path_name {path_name} " \
+              f"--weight_pene 1 " \
+              f"--visualize 0 --use_zero_pose 1 --use_zero_shape 1 --random_orient 0 --clip_far 1"
+
     os.system(command)
