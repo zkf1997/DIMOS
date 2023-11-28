@@ -22,6 +22,7 @@
 * The rests employ the **Apache 2.0 license**.
 
 # Updates
+* Uploaded a variant locomotion model trained on cleaned walking motion data: [link](https://drive.google.com/drive/folders/1WAwXlM8qvawgSJ8ys_KNEX1Y4hI0Ec8u).
 * Initial release with code and documentation for motion generation demos. Documentation for model training and data preprocessing will be updated later.  
 
 # Installation
