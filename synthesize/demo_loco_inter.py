@@ -54,7 +54,7 @@ if __name__ == '__main__':
     navmesh_tight = get_navmesh(navmesh_tight_path, scene_path, agent_radius=0.05, floor_height=floor_height,
                                 visualize=True)
     # get tight navmesh for path planning
-    navmesh_loose = get_navmesh(navmesh_loose_path, scene_path, agent_radius=0.4, floor_height=floor_height,
+    navmesh_loose = get_navmesh(navmesh_loose_path, scene_path, agent_radius=0.2, floor_height=floor_height,
                                 visualize=True)
 
     seq_num = 4
@@ -91,8 +91,8 @@ if __name__ == '__main__':
         pelvis = bm(**smplx_params).joints[0, 0, :].detach().cpu().numpy()
 
         start_point = np.array([-1.9, 2.45, 0])
-        # r = torch.cuda.FloatTensor(1).uniform_() * 0.4 + 0.6
-        r = 0.6
+        r = torch.cuda.FloatTensor(1).uniform_() * 0.2 + 1.0
+        # r = 1.0
         body_orient = torch.cuda.FloatTensor(smplx_params['global_orient']).squeeze()
         forward_dir = pytorch3d.transforms.axis_angle_to_matrix(body_orient)[:, 2]
         forward_dir[2] = 0
@@ -105,31 +105,40 @@ if __name__ == '__main__':
         start_target = np.stack([start_point, target_point])
 
         scene_mesh = trimesh.load(scene_path, force='mesh')
-        start_target = project_to_navmesh(navmesh_loose, start_target)
-        start_target[1] = start_target[1] + (forward_dir * 0.001).detach().cpu().numpy()
         wpath = path_find(navmesh_loose, start_target[0], start_target[1], visualize=visualize, scene_mesh=scene_mesh)
+        if len(wpath) == 0:
+            start_target = project_to_navmesh(navmesh_loose, start_target)
+            wpath = path_find(navmesh_loose, start_target[0], start_target[1], visualize=visualize,
+                              scene_mesh=scene_mesh)
         print('find a path of length:', len(wpath))
         with open(wpath_path, 'wb') as f:
             pickle.dump(wpath, f)
 
-        command = "python synthesize/gen_locomotion_unify.py --goal_thresh 0.5 --goal_thresh_final 0.2 --max_depth 180 --num_gen1 128 --num_gen2 16 --num_expand 8 " \
-                  "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_samp_collision/locomotion " \
-                  "--gen_name policy_search --num_sequence 1 " \
-                  "--random_seed {} --scene_path {} --scene_name {} --navmesh_path {} --floor_height {:.2f} --wpath_path {} --path_name {} " \
-                  "--clip_far 1 --history_mode 1 --weight_pene 1 " \
-                  "--visualize 0 --use_zero_pose 1 --use_zero_shape 1".format(seq_id, scene_path, scene_name, navmesh_tight_path, floor_height, wpath_path, path_name)
+        cfg_policy = 'MPVAEPolicy_frame_label_walk_collision/map_nostop'
+        command = (
+            f"python synthesize/gen_locomotion_unify.py --goal_thresh 0.5 --goal_thresh_final 0.2 --max_depth 180 --num_gen1 128 --num_gen2 16 --num_expand 8 "
+            f"--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/{cfg_policy} "
+            f"--gen_name policy_search --num_sequence 1 "
+            f"--random_seed {seq_id} --scene_path {scene_path} --scene_name {scene_name} --navmesh_path {navmesh_tight_path} "
+            f"--floor_height {floor_height:.2f} --wpath_path {wpath_path} --path_name {path_name} "
+            f"--clip_far 1 --history_mode 1 --weight_pene 1 "
+            f"--visualize 0 --use_zero_pose 1 --use_zero_shape 1"
+        )
         print(command)
         os.system(command)
 
-        last_motion_path = f'results/locomotion/{scene_name}/{path_name}/MPVAEPolicy_samp_collision/locomotion/policy_search/seq000/results_ssm2_67_condi_marker_map_0.pkl'
+        last_motion_path = f'results/locomotion/{scene_name}/{path_name}/{cfg_policy}/policy_search/seq000/results_ssm2_67_condi_marker_map_0.pkl'
         """sit down"""
-        command = "python synthesize/gen_interaction_unify.py --goal_thresh_final -1 --max_depth 15 --num_gen1 128 --num_gen2 32 --num_expand 4 " \
-                  "--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_sit_marker/sit_2frame " \
-                  "--gen_name policy_search --num_sequence 1 " \
-                  "--random_seed {} --scene_path {} --scene_name {} --sdf_path {} --mesh_path {} --floor_height {:.2f} " \
-                  "--target_body_path {} --interaction_name {} --last_motion_path {} " \
-                  "--history_mode 2 --weight_target_dist 1 " \
-                  "--visualize 0".format(seq_id, scene_path, scene_name, sdf_path, mesh_path, floor_height, target_body_path, interaction_name + '_down', last_motion_path)
+        command = (
+            f"python synthesize/gen_interaction_unify.py --goal_thresh_final -1 --max_depth 15 --num_gen1 128 --num_gen2 32 --num_expand 4 "
+            f"--project_dir . --cfg_policy ../results/exp_GAMMAPrimitive/MPVAEPolicy_sit_marker/sit_2frame "
+            f"--gen_name policy_search --num_sequence 1 "
+            f"--random_seed {seq_id} --scene_path {scene_path} --scene_name {scene_name} --sdf_path {sdf_path} --mesh_path {mesh_path} "
+            f"--floor_height {floor_height:.2f} "
+            f"--target_body_path {target_body_path} --interaction_name {interaction_name + '_down'} --last_motion_path {last_motion_path} "
+            f"--history_mode 2 --weight_target_dist 1 "
+            f"--visualize 0"
+        )
         print(command)
         os.system(command)
 

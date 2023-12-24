@@ -51,6 +51,8 @@ conda config --set solver libmamba
 * [ShapeNet](https://shapenet.org/) (Optional if you only want to test demos)
 * [Replica](https://github.com/facebookresearch/Replica-Dataset) (Optional if you only want to test demos)
 * [PROX-S](https://github.com/zkf1997/COINS#prox-s-dataset) (Optional if you only want to test demos)
+* [AMASS](https://amass.is.tue.mpg.de/) (Optional if you only want to test demos)
+* [BABEL](https://babel.is.tue.mpg.de/) (Optional if you only want to test demos)
 
 Please put the downloaded data in the `data` folder and organize as follows: 
 ```
@@ -65,6 +67,8 @@ Please put the downloaded data in the `data` folder and organize as follows:
 │   ├── proxs
 │   ├── replica
 │   ├── ShapeNetCore.v2
+│   ├── AMASS
+│   ├── BABEL
 ```
 
 [//]: # (### Paths)
@@ -150,7 +154,7 @@ These demos show generating motions involving walking to an object and then perf
   python synthesize/demo_prox.py
   python vis_gen.py --seq_path 'results/interaction/MPH8/sit_bed_9_*_down/MPVAEPolicy_sit_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
   python synthesize/demo_replica.py
-  python vis_gen.py --seq_path 'results/interaction/room_0/sit_stool_39_*_down/MPVAEPolicy_sit_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
+  python vis_gen.py --seq_path 'results/interaction/room_0/sit_chair_74_*_down/MPVAEPolicy_sit_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
   ```
 Example visualization video recordings:
 * [test scene](https://drive.google.com/file/d/1VRnIbwGh_v9sar6DO2YUSd2FiiXJW_RO/view?usp=sharing)
@@ -169,3 +173,22 @@ This demo could probably show unnatural transition when switching locomotion/int
   python vis_gen.py --seq_path 'results/interaction/test_room/chain_sit_sofa_0_*_down/MPVAEPolicy_sit_marker/sit_2frame/policy_search/seq000/results_ssm2_67_condi_marker_inter_0.pkl'
   ```
 Example visualization [video recording](https://drive.google.com/file/d/1z46dwYTkd11qJdJh6wFZhYH15d7GCIyk/view?usp=sharing).
+
+# Training
+
+## Data Preparation
+
+* Object mesh data: 
+  * We use [ShapeNet](https://shapenet.org/) for object mesh data. 
+
+* Motion primitive data
+
+* Random scene and navigation mesh:
+
+* Goal interaction data:
+
+## Motion Primitive Model Training
+
+## Locomotion Control Policy Training
+
+## Interaction Control Policy Training
