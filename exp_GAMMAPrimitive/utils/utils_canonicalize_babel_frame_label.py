@@ -99,7 +99,6 @@ def get_body_model(type, gender, batch_size,device='cpu'):
     gender: male, female, neutral
     batch_size: an positive integar
     '''
-    # body_model_path = '/home/kaizhao/dataset/models_smplx_v1_1/models/'
     body_model_path = get_body_model_path()
     body_model = smplx.create(body_model_path, model_type=type,
                                     gender=gender, ext='npz',
@@ -220,7 +219,10 @@ def get_seq_files(action='sit'):
     n_act_spans = 0
     dur = 0
     dur_frame = 0
+    sids = []
     file_paths = []
+    start_times = []
+    end_times = []
     for spl in babel:
         for sid in babel[spl]:
             seq_l, frame_l = get_cats(babel[spl][sid], spl)
@@ -229,27 +231,35 @@ def get_seq_files(action='sit'):
                 for seg in babel[spl][sid]['frame_ann']['labels']:
                     if action in seg["act_cat"]:
                         dur_frame += seg['end_t'] - seg['start_t']
+
+                        sids.append(sid)
+                        file_path = os.path.join(*(babel[spl][sid]['feat_p'].split(os.path.sep)[1:]))
+                        dataset_name = file_path.split(os.path.sep)[0]
+                        if dataset_name in amass_dataset_rename_dict:
+                            file_path = file_path.replace(dataset_name, amass_dataset_rename_dict[dataset_name])
+                        file_path = file_path.replace('poses',
+                                                      'stageii')  # file naming suffix changed in different amass versions
+                        # replace space
+                        file_path = file_path.replace(" ",
+                                                      "_")  # set replace count to string length, so all will be replaced
+                        file_paths.append(file_path)
+                        start_times.append(seg['start_t'])
+                        end_times.append(seg['end_t'])
+
             if action in seq_l + frame_l:
                 # Store all relevant mocap sequence annotations
                 act_anns[sid].append(babel[spl][sid])
                 # # Individual spans of the action in the sequence
                 n_act_spans += Counter(seq_l + frame_l)[action]
                 dur += babel[spl][sid]['dur']
-                file_path = os.path.join(*(babel[spl][sid]['feat_p'].split(os.path.sep)[1:]))
-                dataset_name = file_path.split(os.path.sep)[0]
-                if dataset_name in amass_dataset_rename_dict:
-                    file_path = file_path.replace(dataset_name, amass_dataset_rename_dict[dataset_name])
-                file_path = file_path.replace('poses', 'stageii')  # file naming suffix changed in different amass versions
-                # replace space
-                file_path = file_path.replace(" ", "_")  # set replace count to string length, so all will be replaced
-                file_paths.append(file_path)
+
     print('# Seqs. containing action {0} = {1}'.format(action, len(act_anns)))
     print('# Segments containing action {0} = {1}'.format(action, n_act_spans))
     print('dur:', dur)
     print('dur_frame:', dur_frame)
     print('datasets:', set([file_path.split(os.path.sep)[0] for file_path in file_paths]))
 
-    return file_paths
+    return sids, file_paths, start_times, end_times
 
 # AMASS dataset names from website are slightly different from what used in BABEL
 amass_dataset_rename_dict = {
@@ -289,18 +299,23 @@ if __name__=='__main__':
         result_smplx_path = 'data/DIMOS_mp/Canonicalized-MPx{:d}/data'.format(N_MPS)
     else:
         result_smplx_path = 'data/DIMOS_mp/Canonicalized-MP/data'
-    subsets = ['sit', 'lie', 'walk', 'turn']
+    subsets = [
+               'walk',
+               ]
 
+    height_stat = {}
     #### main loop to each subset in AMASS
     for subset in subsets:
-        seqs = [os.path.join(raw_dataset_path, seq_path) for seq_path in get_seq_files(subset)]
-        outfolder = os.path.join(result_smplx_path, subset)
+        sids, seqs, start_times, end_times = get_seq_files(subset)
+        outfolder = os.path.join(result_smplx_path, subset + '_frame_label')
         if not os.path.exists(outfolder):
             os.makedirs(outfolder)
         print('-- processing subset {:s}'.format(subset))
         index_subseq = 0 # index subsequences for subsets separately
         #### main loop to process each sequence
-        for seq in tqdm(seqs):
+        for sid, seq, start_t, end_t in zip(tqdm(sids), seqs, start_times, end_times):
+            print('processing:', sid, seq, start_t, end_t)
+            seq = os.path.join(raw_dataset_path, seq)
             ## read data
             if os.path.basename(seq) == 'shape.npz':
                 continue
@@ -321,8 +336,8 @@ if __name__=='__main__':
             bodymodel_one = bm_one_male if str(data['gender'].astype(str)) == 'male' else bm_one_female
 
             ## read data and downsample
-            transl_all = data['trans'][::downsample_rate]
-            pose_all = data['poses'][::downsample_rate]
+            transl_all = data['trans'][int(start_t * fps):int(end_t * fps) + 1][::downsample_rate]
+            pose_all = data['poses'][int(start_t * fps):int(end_t * fps) + 1][::downsample_rate]
             betas = data['betas'][:10]
 
             ## skip too short sequences
@@ -330,10 +345,18 @@ if __name__=='__main__':
             if n_frames < len_subseq:
                 continue
 
+            # skip sequences with significant height elevation
+            height = transl_all[:, 2]
+            height_range = np.max(height) - np.min(height)
+            height_stat['_'.join([str(sid), str(seq), str(start_t), str(end_t)])] = height_range
+            if height_range > 0.1:
+                print('height range too large:', height_range, '_'.join([str(sid), str(seq), str(start_t), str(end_t)]))
+                continue
+
             t = 0
             while t < n_frames:
                 ## get subsequence and setup IO
-                outfilename = os.path.join(outfolder, 'subseq_{:05d}.npz'.format(index_subseq))
+                outfilename = os.path.join(outfolder, 'subseq_{:07d}.npz'.format(index_subseq))
                 transl = deepcopy(transl_all[t:t+len_subseq, :])
                 pose = deepcopy(pose_all[t:t+len_subseq, :])
                 data_out = {}
@@ -380,5 +403,8 @@ if __name__=='__main__':
 
                 np.savez(outfilename, **data_out)
                 t = t+len_subseq
-                # t = t + 1 if N_MPS == 1 else t + MP_FRAME
+                # t = t + len_subseq if N_MPS == 1 else t + MP_FRAME
                 index_subseq = index_subseq + 1
+
+    with open(os.path.join(result_smplx_path, 'height_stat.json'), 'w') as f:
+        json.dump({'height_stat': height_stat}, f)

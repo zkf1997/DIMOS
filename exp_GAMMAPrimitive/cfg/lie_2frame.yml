@@ -25,8 +25,9 @@ trainconfig:
   saving_per_X_ep: 30
   dataset_path: data/DIMOS_mp/Canonicalized-MP/data/
   subsets:
-    - walk_frame_label
-    - locomotion
+    - lie
+    - lie_down
+    - sit
 
 
 

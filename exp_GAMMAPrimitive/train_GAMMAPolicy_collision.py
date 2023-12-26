@@ -798,102 +798,25 @@ if __name__ == '__main__':
             epoch = checkpoint['epoch']
             print('[INFO] --resuming training from {}'.format(ckp_list[-1]))
 
-    # dataset_path = 'data/navmesh'
-    # # scene_list = ['04256520_1b5ae67e2ffb387341fbc1e2da054acb']
-    # scene_list = ['03001627_1b67a3a1101a9acb905477d2a8504646']
-    # batch_gen = BatchGeneratorCollision(dataset_path=dataset_path,
-    #                                     shapenet_dir='/mnt/atlas_root/vlg-data/ShapeNetCore.v2/' if host_name == 'dalcowks' else '/vlg-data/ShapeNetCore.v2/',
-    #                                     scene_list=scene_list,
-    #                                     body_model_path=bm_path)
-
-    """prox"""
-    # dataset_path = ''
-    # scene_dir = 'data/scenes'
-    # scene_list = ["BasementSittingBooth", "MPH11", "MPH112", "MPH16", "MPH1Library", "MPH8",
-    #                "N0SittingBooth", "N0Sofa", "N3Library", "N3Office", "N3OpenArea", "Werkraum"]
-    # batch_gen = BatchGeneratorSceneTrain(dataset_path=dataset_path,
-    #                                     scene_dir=scene_dir,
-    #                                     scene_list=scene_list,
-    #                                     scene_type='prox',
-    #                                     body_model_path=bm_path)
-
-    """random scene"""
-    # dataset_path = ''
-    # scene_dir = 'data/scenes'
-    # scene_list_path = Path('data/scenes/random_scene_names.pkl')
-    # with open(scene_list_path, 'rb') as f:
-    #     scene_list = pickle.load(f)
-    # print('#scene:', len(scene_list))
-    # batch_gen = BatchGeneratorSceneTrain(dataset_path='',
-    #                                     scene_dir=scene_dir,
-    #                                     scene_list=scene_list,
-    #                                     scene_type='random_scene',
-    #                                     body_model_path=bm_path)
-
-    """random scene new, contain hard path"""
+    """Train locomotion policy in random scenes"""
     dataset_path = ''
     scene_dir = 'data/scenes'
-    scene_list_path = Path('data/scenes/random_scene_new_names.pkl')
+    scene_list_path = Path('data/scenes/random_scene_names.pkl')
     with open(scene_list_path, 'rb') as f:
         scene_list = pickle.load(f)
     print('#scene:', len(scene_list))
     batch_gen = BatchGeneratorSceneTrain(dataset_path='',
                                         scene_dir=scene_dir,
                                         scene_list=scene_list,
-                                        scene_type='random_scene_new',
-                                        body_model_path=bm_path)
+                                        scene_type='random_scene',
+                                        body_model_path=bm_path,
+                                        mp_list=None)
 
-    """random obstacles"""
-    # dataset_path = ''
-    # scene_dir = 'data/scenes'
-    # scene_list_path = Path('data/scenes/random_scene_obstacle_names.pkl')
-    # with open(scene_list_path, 'rb') as f:
-    #     scene_list = pickle.load(f)
-    # print('#scene:', len(scene_list))
-    # batch_gen = BatchGeneratorSceneTrain(dataset_path='',
-    #                                      scene_dir=scene_dir,
-    #                                      scene_list=scene_list,
-    #                                      scene_type='random_scene_obstacle',
-    #                                      body_model_path=bm_path)
-
-    """random box obstacle"""
-    # dataset_path = ''
-    # scene_dir = 'data/scenes'
-    # scene_list_path = Path('data/scenes/random_box_obstacle_far_names.pkl')
-    # with open(scene_list_path, 'rb') as f:
-    #     scene_list = pickle.load(f)
-    # print('#scene:', len(scene_list))
-    # batch_gen = BatchGeneratorSceneTrain(dataset_path='',
-    #                                      scene_dir=scene_dir,
-    #                                      scene_list=scene_list,
-    #                                      scene_type='random_box_obstacle_far',
-    #                                      body_model_path=bm_path)
-
-    """refine in room_0"""
-    # dataset_path = ''
-    # scene_dir = '/mnt/atlas_root/vlg-nfs/kaizhao/datasets/replica/room_0' if host_name == 'dalcowks' else '/vlg-nfs/kaizhao/datasets/replica/room_0'
-    # batch_gen = BatchGeneratorSceneTrain(dataset_path='',
-    #                                      scene_dir=scene_dir,
-    #                                      scene_list=['room_0'],
-    #                                      scene_type='room_0',
-    #                                      body_model_path=bm_path)
-
-    data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True, random_rotation_range=cfg.trainconfig.random_rotation_range, res=cfg.modelconfig.map_res, extent=cfg.modelconfig.map_extent,)
-    # data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True, random_rotation_range=cfg.trainconfig.random_rotation_range, res=cfg.modelconfig.map_res, extent=cfg.modelconfig.map_extent,)
-    # data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True, random_rotation_range=cfg.trainconfig.random_rotation_range, res=cfg.modelconfig.map_res, extent=cfg.modelconfig.map_extent,)
-    # data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True, random_rotation_range=cfg.trainconfig.random_rotation_range, res=cfg.modelconfig.map_res, extent=cfg.modelconfig.map_extent,)
-    # data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True,
-    #                            random_rotation_range=cfg.trainconfig.random_rotation_range, res=cfg.modelconfig.map_res,
-    #                            extent=cfg.modelconfig.map_extent, )
-    # data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True,
-    #                            random_rotation_range=cfg.trainconfig.random_rotation_range, res=cfg.modelconfig.map_res,
-    #                            extent=cfg.modelconfig.map_extent, )
-    # data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True,
-    #                            random_rotation_range=cfg.trainconfig.random_rotation_range, res=cfg.modelconfig.map_res,
-    #                            extent=cfg.modelconfig.map_extent, )
-    # data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True,
-    #                            random_rotation_range=cfg.trainconfig.random_rotation_range, res=cfg.modelconfig.map_res,
-    #                            extent=cfg.modelconfig.map_extent, )
+    init_pose_from_data = False
+    data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True, init_pose_from_data=init_pose_from_data, random_rotation_range=cfg.trainconfig.random_rotation_range, res=cfg.modelconfig.map_res, extent=cfg.modelconfig.map_extent,)
+    data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True, init_pose_from_data=init_pose_from_data, random_rotation_range=cfg.trainconfig.random_rotation_range, res=cfg.modelconfig.map_res, extent=cfg.modelconfig.map_extent,)
+    data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True, init_pose_from_data=init_pose_from_data, random_rotation_range=cfg.trainconfig.random_rotation_range, res=cfg.modelconfig.map_res, extent=cfg.modelconfig.map_extent,)
+    data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True, init_pose_from_data=init_pose_from_data, random_rotation_range=cfg.trainconfig.random_rotation_range, res=cfg.modelconfig.map_res, extent=cfg.modelconfig.map_extent,)
     last_epoch = epoch
     for epoch in tqdm(range(last_epoch, num_epochs)):
         # while epoch < num_epochs:
@@ -902,7 +825,9 @@ if __name__ == '__main__':
         if args.profile:
             t_start = time.time()
         for _ in range(num_envs_per_epoch):
-            data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, random_rotation_range=cfg.trainconfig.random_rotation_range)
+            data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False,
+                                       init_pose_from_data=init_pose_from_data,
+                                       random_rotation_range=cfg.trainconfig.random_rotation_range)
             with torch.no_grad():
                 traj_ppo = rollout(data, max_depth=max_depth, epoch=epoch)
                 if traj_ppo is None:
@@ -1026,13 +951,6 @@ if __name__ == '__main__':
                 'model_state_dict': policy_model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
             }, cfg_policy.trainconfig['save_dir'] + "/last.ckp")
-            # torch.save({
-            #     'epoch': epoch + 1,
-            #     'model_state_dict': policy_model.state_dict(),
-            #     'optimizer_state_dict': optimizer.state_dict(),
-            # }, cfg_policy.trainconfig['save_dir'] + "/{}.ckp".format(str(epoch)))
-
-        # epoch += 1
 
     # save final model to wandb
     art = wandb.Artifact("policy", type="model")

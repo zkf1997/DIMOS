@@ -25,9 +25,9 @@ trainconfig:
   num_epochs: 400
   num_epochs_fix: 100
   saving_per_X_ep: 100
-  dataset_path: /home/kaizhao/dataset/amass/DIMOS_frame_label/Canonicalized-MPx10/data/
+  dataset_path: data/DIMOS_mp/Canonicalized-MPx10/data/
   subsets:
-    - walk
+    - walk_frame_label
     - locomotion
 
 

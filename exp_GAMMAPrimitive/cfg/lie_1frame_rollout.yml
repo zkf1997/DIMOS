@@ -25,7 +25,7 @@ trainconfig:
   num_epochs: 400
   num_epochs_fix: 100
   saving_per_X_ep: 100
-  dataset_path: /home/kaizhao/dataset/gamma/Canonicalized-MPx10/data/
+  dataset_path: data/DIMOS_mp/Canonicalized-MPx10/data/
   subsets:
     - lie
     - lie_down

@@ -24,18 +24,19 @@ class BatchGeneratorSceneTrain(BatchGeneratorReachingTarget):
                  scene_list=None,
                  scene_dir=None,
                  scene_type='random',
+                 mp_list=None,
                  ):
         super().__init__(dataset_path, body_model_path, body_repr)
         self.scene_list= scene_list
         self.scene_dir = Path(scene_dir)
         self.scene_idx = 0
         self.scene_type=scene_type
-        # with open(os.path.join(dataset_path, 'orient.json')) as f:
-        #     self.orient = np.array(json.load(f)).reshape(1, 3)
+        self.mp_list = mp_list
 
     def next_body(self, sigma=10, visualize=False, use_zero_pose=True,
                   scene_idx=None, start_target=None, random_rotation_range=1.0,
                   clip_far=False,
+                  init_pose_from_data=False,
                   res=32, extent=1.6):
         if scene_idx is None:
             scene_idx = torch.randint(len(self.scene_list), size=(1,)).item()
@@ -133,6 +134,10 @@ class BatchGeneratorSceneTrain(BatchGeneratorReachingTarget):
         xbo_dict['betas'] = torch.cuda.FloatTensor(1, 10).zero_()
         xbo_dict['body_pose'] = self.vposer.decode(torch.cuda.FloatTensor(1,32).zero_() if use_zero_pose else torch.cuda.FloatTensor(1,32).normal_(), # prone to self-interpenetration
                                        output_type='aa').view(1, -1)
+        if init_pose_from_data:
+            motion_data = np.load(random.choice(self.mp_list))
+            start_frame = torch.randint(0, len(motion_data['poses']), (1,)).item()
+            xbo_dict['body_pose'] = torch.cuda.FloatTensor(motion_data['poses'][start_frame:start_frame + 1, 3:66])
         xbo_dict['global_orient'] = self.get_bodyori_from_wpath(wpath[0], wpath[-1])[None,...]
 
         """snap to the ground"""
@@ -443,12 +448,13 @@ class BatchGeneratorSceneTest(BatchGeneratorReachingTarget):
                  ):
         super().__init__(dataset_path, body_model_path, body_repr)
 
-    def interpolate_path(self, wpath, max_len=0.5):
+    def interpolate_path(self, wpath):
         interpolated_path = [wpath[0]]
         last_point = wpath[0]
         for point_idx in range(1, wpath.shape[0]):
-            while torch.norm(wpath[point_idx] - last_point) > max_len:
-                last_point = last_point + (wpath[point_idx] - last_point) / torch.norm(wpath[point_idx] - last_point) * max_len
+            while torch.norm(wpath[point_idx] - last_point) > 1:
+                last_point = last_point + (wpath[point_idx] - last_point) / torch.norm(
+                    wpath[point_idx] - last_point)
                 interpolated_path.append(last_point)
             last_point = wpath[point_idx]
             interpolated_path.append(last_point)

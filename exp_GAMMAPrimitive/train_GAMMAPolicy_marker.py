@@ -765,15 +765,6 @@ if __name__ == '__main__':
     USE_ROBUST_KLD = cfg_policy.lossconfig.get('use_robust_kld', True)
     USE_EARLY_STOP = cfg_policy.trainconfig.get('use_early_stop', False)
 
-    # ray directions
-    # theta = np.linspace(1.0 / 3.0, 2.0 / 3.0, num=cfg_policy.modelconfig.get('ray_theta_num', 7)) * np.pi
-    # phi = np.linspace(0.0, 1.0, num=cfg_policy.modelconfig.get('ray_phi_num', 37)) * np.pi
-    # theta, phi = np.meshgrid(theta, phi, indexing='ij')
-    # vectors = np.stack([np.sin(theta) * np.cos(phi), np.sin(theta) * np.sin(phi), np.cos(theta)], axis=-1).reshape(-1,
-    #                                                                                                                3)  # [259, 3]
-    # ray_vectors = torch.cuda.FloatTensor(vectors)
-    # num_ray = ray_vectors.shape[0]
-
     """data"""
     with open(config_env.get_body_marker_path() + '/SSM2.json') as f:
         marker_ssm_67 = json.load(f)['markersets'][0]['indices']
@@ -839,19 +830,25 @@ if __name__ == '__main__':
 
     print('save trajs at:', os.path.join(cfg_policy.trainconfig['save_dir'], args.exp_name, 'results'))
 
-    data_path_list = [
-        'data/interaction/filter/sit_sofa.pkl',
-                      'data/interaction/filter/sit_chair.pkl',
-        #               'data/interaction/filter/lie_sofa.pkl',
-                      # 'data/interaction/filter/lie_bed.pkl',
-                      ]
+    data_path_list = []
+    sit_data_List = [
+        'data/interaction/sit_sofa.pkl',
+        'data/interaction/sit_chair.pkl',
+    ]
+    lie_data_list = [
+        'data/interaction/lie_sofa.pkl',
+    ]
+    if 'sit' in cfg_policy.wandb.name:
+        data_path_list += sit_data_List
+    if 'lie' in cfg_policy.wandb.name:
+        data_path_list += lie_data_list
     batch_gen = BatchGeneratorInteractionTrain(dataset_path='',
-                                               shapenet_dir='/mnt/atlas_root/vlg-data/ShapeNetCore.v2/' if host_name == 'dalcowks' else '/vlg-data/ShapeNetCore.v2/',
+                                               shapenet_dir='data/ShapeNetCore.v2/',
                                                sdf_dir='data/shapenet_sdf',
                                                data_path_list=data_path_list,
                                                body_model_path=bm_path)
     data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=False, visualize=True, reverse=np.random.rand() < 0.5)
-    # data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=True, visualize=True, reverse=True)
+    data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=True, visualize=True, reverse=True)
     data = batch_gen.next_body(sigma=GOAL_SIGMA, use_zero_pose=True, visualize=True, reverse=False)
     last_epoch = epoch
     for epoch in tqdm(range(last_epoch, num_epochs)):
@@ -991,11 +988,6 @@ if __name__ == '__main__':
         '''save the checkpoints'''
         save_per_x_ep = cfg_policy.trainconfig['saving_per_X_ep']
         if ((1 + epoch) % save_per_x_ep == 0):
-            # torch.save({
-            #     'epoch': epoch + 1,
-            #     'model_state_dict': policy_model.state_dict(),
-            #     'optimizer_state_dict': optimizer.state_dict(),
-            # }, cfg_policy.trainconfig['save_dir'] + "/epoch-" + str(epoch + 1) + ".ckp")
             torch.save({
                 'epoch': epoch + 1,
                 'model_state_dict': policy_model.state_dict(),

@@ -80,7 +80,7 @@ def export_obj(mesh, export_dir):
 output_dir = Path('data/shapenet_real')
 
 # more beds from shapenet
-input_dir = Path('/mnt/atlas_root/vlg-data/ShapeNetCore.v2/')
+input_dir = Path('data/ShapeNetCore.v2/')
 with open('utils/obj_ids.json', 'r') as f:
     obj_dict = json.load(f)
 

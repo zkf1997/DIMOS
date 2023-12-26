@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import os, sys, glob
+sys.path.append(os.getcwd())
 import numpy as np
 from tqdm import tqdm
 import torch
@@ -15,7 +16,7 @@ import csv
 import pdb
 import pickle
 from copy import deepcopy
-
+from exp_GAMMAPrimitive.utils.config_env import *
 
 '''
 In the AMASS dataset, all bodies are located in a bounding box, with
@@ -88,7 +89,7 @@ def get_body_model(type, gender, batch_size,device='cpu'):
     gender: male, female, neutral
     batch_size: an positive integar
     '''
-    body_model_path = '/home/kaizhao/dataset/models_smplx_v1_1/models/'
+    body_model_path = get_body_model_path()
     body_model = smplx.create(body_model_path, model_type=type,
                                     gender=gender, ext='npz',
                                     num_pca_comps=12,
@@ -111,11 +112,11 @@ def get_body_model(type, gender, batch_size,device='cpu'):
 
 ## set mosh markers
 ## read the corresponding smplx verts indices as markers.
-with open('/home/kaizhao/dataset/models_smplx_v1_1/models/markers/CMU.json') as f:
-        marker_cmu_41 = list(json.load(f)['markersets'][0]['indices'].values())
+with open(os.path.join(get_body_marker_path(), 'CMU.json')) as f:
+    marker_cmu_41 = list(json.load(f)['markersets'][0]['indices'].values())
 
-with open('/home/kaizhao/dataset/models_smplx_v1_1/models/markers/SSM2.json') as f:
-        marker_ssm_67 = list(json.load(f)['markersets'][0]['indices'].values())
+with open(os.path.join(get_body_marker_path(), 'SSM2.json')) as f:
+    marker_ssm_67 = list(json.load(f)['markersets'][0]['indices'].values())
 
 bm_one_male = get_body_model('smplx', 'male', 1)
 bm_one_female = get_body_model('smplx', 'female', 1)
@@ -196,12 +197,16 @@ if __name__=='__main__':
     bm_batch_male = get_body_model('smplx', 'male', len_subseq, device='cuda')
     bm_batch_female = get_body_model('smplx', 'female', len_subseq, device='cuda')
     #### set input output dataset paths
-    samp_dataset_path = '/home/kaizhao/dataset/samp'
+    samp_dataset_path = 'data/samp'
     if N_MPS > 1:
-        samp_smplx_path = '/home/kaizhao/dataset/samp/Canonicalized-MPx{:d}/data'.format(N_MPS)
+        samp_smplx_path = 'data/DIMOS_mp/Canonicalized-MPx{:d}/data'.format(N_MPS)
     else:
-        samp_smplx_path = '/home/kaizhao/dataset/samp/Canonicalized-MP/data'
-    subsets = ['chair', 'armchair', 'highstool', 'lie_down', 'locomotion', 'reebokstep', 'run', 'sofa', 'table']
+        samp_smplx_path = 'data/DIMOS_mp/Canonicalized-MP/data'
+    subsets = [
+        'chair', 'armchair', 'highstool', 'lie_down',
+        'locomotion',
+        'reebokstep', 'run', 'sofa', 'table'
+    ]
 
     #### main loop to each subset in AMASS
     for subset in subsets:

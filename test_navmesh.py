@@ -318,8 +318,8 @@ def test_replica():
 
 def test_random(visualize=False, find_path=True, surround_object=True, discard_simple=False):
     shapenet_dir = Path('data/shapenet_real')
-    output_dir = Path('data/scenes/random_scene_0.4')
-    output_dir.mkdir(exist_ok=True)
+    output_dir = Path('data/scenes/random_scene')
+    output_dir.mkdir(exist_ok=True, parents=True)
     extents = (np.random.uniform(2, 7), np.random.uniform(2, 7))
     obj_num_range_dict = {'Armchairs': 4, 'StraightChairs': 4, 'Beds':1, 'Sofas':2, 'L-Sofas':1, 'Desks':2, 'Tables': 2}
     obj_paths = []
@@ -366,10 +366,10 @@ def test_random(visualize=False, find_path=True, surround_object=True, discard_s
     scene_mesh.export(output_dir / (scene_cfg + '.ply'))
     scene_mesh.apply_transform(zup_to_shapenet)
     export_path = output_dir / (scene_cfg + '_navmesh_loose.ply')
-    navmesh = create_navmesh(scene_mesh, export_path, agent_radius=0.4, visualize=visualize)
+    navmesh = create_navmesh(scene_mesh, export_path, agent_radius=0.2, visualize=visualize)
     export_path = output_dir / (scene_cfg + '_navmesh_tight.ply')
     navmesh_tight = create_navmesh(scene_mesh, export_path, agent_radius=0.05, visualize=visualize)
-    sample_pairs = sample_navmesh(navmesh, obj_bounds, num_samples=500, visualize=visualize, find_path=find_path,
+    sample_pairs = sample_navmesh(navmesh, obj_bounds, num_samples=100, visualize=visualize, find_path=find_path,
                                   surround_object=surround_object, discard_simple=discard_simple)
     export_path = output_dir / (scene_cfg + '_samples.pkl')
     with open(export_path, 'wb') as f:
@@ -621,31 +621,13 @@ def sample_replica():
         pickle.dump(sample_pairs, f)
 
 if __name__ == '__main__':
-    # scene_path = '/home/kaizhao/projects/gamma/data/loco_demo/scene.obj'
-    # scene_mesh = trimesh.load(scene_path, force='mesh')
-    # # scene_mesh.apply_transform(zup_to_shapenet)
-    # export_path = Path('/home/kaizhao/projects/gamma/data/loco_demo/navmesh.ply')
-    # navmesh = create_navmesh(scene_mesh, export_path, agent_radius=0.2, visualize=True)
-    # export_path = Path('/home/kaizhao/projects/gamma/data/loco_demo/navmesh_tight.ply')
-    # navmesh = create_navmesh(scene_mesh, export_path, agent_radius=0.01, visualize=True)
-
-
-    # generate_paris(scene_name='Soufflot1',
-    #                    scene_path=Path('/home/kaizhao/dataset/paris/Soufflot1_crop_floor_center_backfacefix.ply'),
-    #                    scene_transl=np.array([44.74797015,  7.70546615, 0.]),
-    #                    visualize=True)
-    # sample_replica()
-    # test_prox()
-    # test_replica()
-    # test_shapenet()
-    for _ in tqdm(range(1)):
+    for _ in tqdm(range(100)):
         try:
-            # test_box_obstacle(visualize=True)
-            test_random(visualize=False, find_path=True, surround_object=False, discard_simple=True)
+            test_random(visualize=False, find_path=True, surround_object=False, discard_simple=False)
         except Exception as e:
             print(e)
 
-    export_dir = Path('/home/kaizhao/projects/gamma/data/scenes/random_scene_0.4')
+    export_dir = Path('data/scenes/random_scene')
     file_names = [path.name for path in export_dir.iterdir()]
     scene_names = ['.'.join(name.split('.')[:-1]) for name in file_names if not 'navmesh' in name and not 'samples' in name]
     valid_names = []
@@ -657,5 +639,5 @@ if __name__ == '__main__':
         if path1.exists() and path2.exists() and path3.exists() and path4.exists():
             valid_names.append(name)
     print(valid_names)
-    with open(Path('/home/kaizhao/projects/gamma/data/scenes/random_scene_0.4_names.pkl'), 'wb') as f:
+    with open(Path('data/scenes/random_scene_names.pkl'), 'wb') as f:
         pickle.dump(valid_names, f)
