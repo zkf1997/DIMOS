@@ -208,8 +208,8 @@ if __name__ == "__main__":
 
         smplx_params = params2torch(smplx_params)
         pelvis = bm(**smplx_params).joints[0, 0, :].detach().cpu().numpy()
-        r = torch.cuda.FloatTensor(1).uniform_() * 0.4 + 0.6
-        # r = 0.6
+        r = torch.cuda.FloatTensor(1).uniform_() * 0.2 + 1.0
+        # r = 1.0
         theta = torch.cuda.FloatTensor(1).uniform_() * torch.pi / 3 - torch.pi / 6
         body_orient = torch.cuda.FloatTensor(smplx_params['global_orient']).squeeze()
         forward_dir = pytorch3d.transforms.axis_angle_to_matrix(body_orient)[:,
@@ -231,7 +231,7 @@ if __name__ == "__main__":
                   "--gen_name policy_search --num_sequence 1 " \
                   "--random_seed {} --scene_path {} --scene_name {} --sdf_path {} --mesh_path {} --floor_height {:.2f} " \
                   "--target_body_path {} --interaction_name {} --start_point_path {} " \
-                  "--use_zero_pose 0 --weight_target_dist 1 " \
+                  "--use_zero_pose 1 --weight_target_dist 1 " \
                   "--visualize 0".format(action_out, action_out, seq_id, scene_path, scene_name, sdf_path, mesh_path, floor_height,
                                          target_body_path,
                                          seq_name, target_point_path)

@@ -139,7 +139,7 @@ You may see some pop-up visualization windows for navigation mesh generation and
 
 * Visualization:
   ```
-  python vis_gen.py --seq_path 'results/locomotion/test_room/path_0/MPVAEPolicy_samp_collision/locomotion/policy_search/seq00*/results_ssm2_67_condi_marker_map_0.pkl'
+  python vis_gen.py --seq_path 'results/locomotion/test_room/test_room_path_0/MPVAEPolicy_frame_label_walk_collision/map_walk/policy_search/seq00*/results_ssm2_67_condi_marker_map_0.pkl'
   ```
   The argument `seq_path` specifies the result sequences you would like to visualize, and it supports glob paths to visualize multiple sequences at the same time.
 
@@ -239,7 +239,7 @@ Example visualization [video recording](https://drive.google.com/file/d/1z46dwYT
   
   We train the locomotion control policy on random scenes generated using ShapeNet objects. The random scenes can be generated using the following script:
   ```
-  python utils/test_navmesh.py
+  python test_navmesh.py
   ```
 
 * Goal interaction data:
@@ -258,7 +258,7 @@ Please train each marker predictor following the description below:
 
 * Train from scratch
   ```
-  python exp_GAMMAPrimitive/train_GAMMAPredictor.py --config [1MP_CONFIG_NAME]
+  python exp_GAMMAPrimitive/train_GAMMAPredictor.py --cfg [1MP_CONFIG_NAME]
   ```
 * Copy last checkpoint and rename
 
@@ -266,7 +266,7 @@ Please train each marker predictor following the description below:
     
 * Finetune with rollout training
   ```
-  python exp_GAMMAPrimitive/train_GAMAPredictor.py --config [10MP_CONFIG_NAME] --resume_training 1
+  python exp_GAMMAPrimitive/train_GAMAPredictor.py --cfg [10MP_CONFIG_NAME] --resume_training 1
   ```
 
 List of config names:
