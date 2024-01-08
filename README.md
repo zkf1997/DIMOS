@@ -313,28 +313,29 @@ When typing the names in the command line, please do not include `.yml`.
 # Evaluation
 * Locomotion
 
-|                           | time ↓   | avg. dist ↓ | contact ↑ | loco pene ↑ |
-|---------------------------|----------|-------------|-----------|-------------|
-| SAMP [13]                 | 5.97     | 0.14        | 0.84      | 0.94        |
-| Ours w/o map, w/o search  | 2.62     | **0.03**    | 0.98      | 0.96        |
-| Ours w/o map, with search | **2.30** | 0.04        | 0.97      | 0.96        |
-| Ours w map, w/o search    | 3.08     | 0.04        | 0.98      | **0.97**    |
-| Ours w map, with search   | 2.64     | **0.03**    | **0.99**  | **0.97**    |
+|                                     | time ↓   | avg. dist ↓ | contact ↑ | loco pene ↑ |
+|-------------------------------------|----------|-------------|-----------|-------------|
+| [SAMP](https://samp.is.tue.mpg.de/) | 5.97     | 0.14        | 0.84      | 0.94        |
+| Ours w/o map, w/o search            | 2.62     | **0.03**    | 0.98      | 0.96        |
+| Ours w/o map, with search           | **2.30** | 0.04        | 0.97      | 0.96        |
+| Ours w map, w/o search              | 3.08     | 0.04        | 0.98      | **0.97**    |
+| Ours w map, with search             | 2.64     | **0.03**    | **0.99**  | **0.97**    |
 
-Note that the reported locomotion evaluation table here has slightly different structure from the initial paper. 
-GAMMA is conceptually the ablation of our method without the walkability map and collision avoidance reward. However, the original released GAMMA is not capable of generating collision-free locomotion in complex indoor environments.
+**Note that the reported locomotion evaluation table here has slightly different structure from the initial paper.** 
+[GAMMA](https://yz-cnsdqz.github.io/eigenmotion/GAMMA/) is conceptually the ablation of our method without the walkability map and collision avoidance reward. However, the original released GAMMA is not capable of generating collision-free locomotion in complex indoor environments.
 ( The original GAMMA is designed and trained for locomotion between far goals in spacious environments and can not handle short-range goals that are common in complex indoor room navigation.) 
-Therefore, we retrained the motion primitive model and trained the locomotion policy with closer-range goals suitable for complex indoor scenes to improve its navigation performance in complex environments, which functions as the ablative baseline `Ours w/o map`. 
+Therefore, we retrained the motion primitive model and trained the locomotion policy with closer-range goals suitable for complex indoor scenes to improve its navigation performance in complex environments.
+We denote this ablative baseline as `Ours w/o map` in the table above (while it was denoted as `GAMMA` in the original paper). 
 We also include the evaluation of locomotion results with and without using the tree-search based test-time optimization.
 
 * Interaction
 
-|               | time ↓   | contact ↑ | pene. mean ↓ | pene. max ↓ |
-|---------------|----------|-----------|--------------|-------------|
-| SAMP [13] sit | 8.63     | 0.89      | 11.91        | 45.22       |
-| Ours sit      | **4.09** | **0.97**  | **1.91**     | **10.61**   |
+|                                         | time ↓   | contact ↑ | pene. mean ↓ | pene. max ↓ |
+|-----------------------------------------|----------|-----------|--------------|-------------|
+| [SAMP](https://samp.is.tue.mpg.de/) sit | 8.63     | 0.89      | 11.91        | 45.22       |
+| Ours sit                                | **4.09** | **0.97**  | **1.91**     | **10.61**   |
 
-|               | time ↓   | contact ↑ | pene. mean ↓ | pene. max ↓ |
-|---------------|----------|-----------|--------------|-------------|
-| SAMP [13] lie | 12.55    | 0.73      | 44.77        | 238.81      |
-| Ours lie      | **4.20** | **0.78**  | **9.90**     | **44.61**   |
+|                                         | time ↓   | contact ↑ | pene. mean ↓ | pene. max ↓ |
+|-----------------------------------------|----------|-----------|--------------|-------------|
+| [SAMP](https://samp.is.tue.mpg.de/) lie | 12.55    | 0.73      | 44.77        | 238.81      |
+| Ours lie                                | **4.20** | **0.78**  | **9.90**     | **44.61**   |
