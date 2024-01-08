@@ -120,9 +120,9 @@ We provide various demos showcasing how to synthesize various human motions in g
 We assume the scene and objects are given as `ply` mesh files, with z-axis pointing up, and the floor plane is at z=0.
 To generate object interactions, we assume the object instance is segmented and provided as a separate `ply` mesh.
 
-Each demo is provided as a single script and can be adapted to general scenes you want to test by changing the scene/object mesh paths. 
+Each demo is provided as a single script and can be adapted to general scenes that you want to test by changing the scene/object mesh paths. 
 By running the demos, you can generate [**random**]() motions in given scenes. 
-**Due to the stochastic nature of our method, the generated results will have varied quality and may have failures.**
+**Due to the stochastic nature of our method and variety of possible test scenes, the generated results will have varied quality and may have failures.**
  
 
 ### Locomotion in 3D Scenes
@@ -339,3 +339,7 @@ We also include the evaluation of locomotion results with and without using the 
 |-----------------------------------------|----------|-----------|--------------|-------------|
 | [SAMP](https://samp.is.tue.mpg.de/) lie | 12.55    | 0.73      | 44.77        | 238.81      |
 | Ours lie                                | **4.20** | **0.78**  | **9.90**     | **44.61**   |
+
+# Contact
+
+If you run into any problems or have any questions, feel free to contact [Kaifeng Zhao](mailto:kaifeng.zhao@inf.ethz.ch) or create an issue.
