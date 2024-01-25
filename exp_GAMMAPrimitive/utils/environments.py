@@ -767,8 +767,8 @@ class BatchGeneratorInteractionTrain(BatchGeneratorReachingTarget):
             wpath)  # starting point, ending point, another point to initialize the body orientation
         wpath[0] = 0  # starting point
         if 'sit' in interaction['interaction']:
-            # r = torch.cuda.FloatTensor(1).uniform_() * 0.4 + 0.6
-            r = 1.5
+            r = torch.cuda.FloatTensor(1).uniform_() * 0.4 + 0.6
+            # r = 1.5
             theta = torch.cuda.FloatTensor(1).uniform_() * torch.pi / 3 - torch.pi / 6
             body_orient = torch.cuda.FloatTensor(smplx_params['global_orient']).squeeze()
             forward_dir = pytorch3d.transforms.axis_angle_to_matrix(body_orient)[:, 2]
