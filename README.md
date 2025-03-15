@@ -313,6 +313,8 @@ When typing the names in the command line, please do not include `.yml`.
 # Evaluation
 * Locomotion
 
+The evaluation script can be found at [evaluation/cal_metric_locomotion.py](./evaluation/cal_metric_locomotion.py).
+
 |                                     | time ↓   | avg. dist ↓ | contact ↑ | loco pene ↑ |
 |-------------------------------------|----------|-------------|-----------|-------------|
 | [SAMP](https://samp.is.tue.mpg.de/) | 5.97     | 0.14        | 0.84      | 0.94        |
@@ -329,6 +331,8 @@ We denote this ablative baseline as `Ours w/o map` in the table above (while it 
 We also include the evaluation of locomotion results with and without using the tree-search based test-time optimization.
 
 * Interaction
+
+The evaluation script can be found at [evaluation/cal_metric_interaction.py](./evaluation/cal_metric_interaction.py).
 
 |                                         | time ↓   | contact ↑ | pene. mean ↓ | pene. max ↓ |
 |-----------------------------------------|----------|-----------|--------------|-------------|
